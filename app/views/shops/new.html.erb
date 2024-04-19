@@ -1,0 +1,9 @@
+<%= form_with(model: @shop, url: shops_path, method: "post") do |form| %>
+  <div class="field">
+    <%= form.label :shop_name %> <br>
+    <%= form.text_field :shop_name %>
+  </div>
+  <div class="actions">
+    <%= form.submit "Save" %>
+  </div>
+<% end %>
