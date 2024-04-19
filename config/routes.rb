@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'carts/index'
   get 'products/index'
     devise_for :users, :controllers => {
       :registrations => "users/registrations",sessions: 'users/sessions'}
