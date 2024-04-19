@@ -28,7 +28,7 @@ shop_id = current_user.shop.id
 
   # POST /products
   def create
-    debugger
+    
     @shop = Shop.find(product_params[:shop_id])
     @product = @shop.products.build(product_params)
 

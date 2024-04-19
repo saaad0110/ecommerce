@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  total_quanity: 1
+  total_price: 
+  users: one
+
+two:
+  total_quanity: 1
+  total_price: 
+  users: two

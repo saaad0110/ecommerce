@@ -1,7 +1,7 @@
 class ShopsController < ApplicationController
   before_action :authenticate_user!
 
-  def news
+  def new
     # Check if the current user already has a shop
     if current_user.has_shop?
       redirect_to current_user.shop # Assuming current_user.shop returns the shop object
@@ -11,6 +11,7 @@ class ShopsController < ApplicationController
   end
   def show
     @shop=Shop.find(params[:id])
+    @products = @shop.products
   end
 
   def create
