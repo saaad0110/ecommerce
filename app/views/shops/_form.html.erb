@@ -1,0 +1,6 @@
+<% if @shop %>
+  <%= form.hidden_field :shop_id, value: @shop.id %>
+<% else %>
+  <!-- Handle case when @shop is nil -->
+  <!-- You can provide a default value or render an error message -->
+<% end %>

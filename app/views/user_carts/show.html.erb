@@ -1,0 +1,11 @@
+<!-- app/views/user_carts/show.html.erb -->
+<h1>Your Cart</h1>
+<ul>
+  <% @user_cart.products.each do |product| %>
+    <li><%= product.name %> - <%= number_to_currency(product.price) %></li>
+  <% end %>
+</ul>
+
+<p>Total: <%= number_to_currency(@user_cart.products.sum(&:price)) %></p>
+
+<%= link_to "Checkout", checkout_path, class: "btn btn-primary" %>

@@ -64,4 +64,16 @@ shop_id = current_user.shop.id
     def product_params
       params.require(:product).permit(:name, :description, :price, :shop_id, :photo)
     end
+    def show
+      @product = Product.find(params[:id])
+      @shop = @product.shop
+      
+    
+      if @shop.nil?
+        flash[:error] = "Shop not found for this product."
+        redirect_to root_path
+        return
+      end
+    end 
+    
 end
