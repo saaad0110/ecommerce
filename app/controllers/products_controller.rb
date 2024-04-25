@@ -74,6 +74,7 @@ shop_id = current_user.shop.id
         redirect_to root_path
         return
       end
+      
     end 
     
 end
