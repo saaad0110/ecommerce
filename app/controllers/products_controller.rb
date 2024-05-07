@@ -15,7 +15,7 @@ shop_id = current_user.shop.id
 @products = Product.where(shop_id: shop_id)
 
   end
-
+ 
   # GET /products/new
   def new
     @shop = Shop.find(params[:shop_id])

@@ -1,18 +1,60 @@
-<h1>Your Cart</h1>
+  <h1>Your Cart</h1>
 
-<% if @cart_products.any? %>
+  <% if @cart_products.any? %>
+    <ul>
+      <% @cart_products.each do |cart_product| %>
+        <li>
+          <%= cart_product.product.name %> -
+          Quantity: <%= cart_product.quantity %> -
+          <%= number_to_currency(cart_product.product.price * cart_product.quantity) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Your cart is empty.</p>
+  <% end %>
+
   <ul>
-    <% @cart_products.each do |cart_product| %>
+    <% @cart.cart_products.each do |cart_product| %>
       <li>
-        <%= cart_product.product.name %> -
-        Quantity: <%= cart_product.quantity %> -
-        <%= number_to_currency(cart_product.product.price * cart_product.quantity) %>
-        <%= button_to "Remove", cart_product_path(cart_product), method: :delete, data: { confirm: "Are you sure?" } %>
+        <%= cart_product.product.name %> 
+
+        <!-- Form to update quantity -->
+        <%= form_with(model: cart_product, url: cart_product_path(cart_product), method: :patch, class: "update-form") do |f| %>
+          <%= f.number_field :quantity, value: cart_product.quantity, min: 1, id: "update-quantity", id_value: "#{cart_product.id}", onchange:"myFunction()" %>
+          <%= f.submit 'Update', style: 'display: none;' %>
+        <% end %>
+
+        <!-- Form to remove product from cart -->
+        <%= form_with(model: cart_product, url: cart_product_path(cart_product), method: :delete, data: { confirm: 'Are you sure?' }) do |f| %>
+          <%= f.submit 'Remove' %>
+        <% end %>
       </li>
     <% end %>
   </ul>
-<% else %>
-  <p>Your cart is empty.</p>
-<% end %>
 
+  <script>
+  function myFunction() {
+      var ID = document.getElementById("update-quantity").getAttribute("id_value");
+      console.log(ID);
+
+      // Assuming csrfToken is defined somewhere in your HTML or JavaScript
+      var csrfToken = 'your_csrf_token_here'; // Replace 'your_csrf_token_here' with the actual CSRF token
+
+      $.ajax({
+          url: '/cart_products/'+ID,
+          type: "PATCH",
+          data: "",
+          headers: {
+              'X-CSRF-Token': csrfToken
+          },
+          success: function(data) {
+              // Handle success response
+          },
+          error: function(data) {
+              // Handle error response
+          }
+      });
+  }
+</script>
 

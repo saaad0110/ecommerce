@@ -6,4 +6,5 @@ class CartsController < ApplicationController
     @cart = current_user.cart
     @cart_products = @cart.cart_products.includes(:product) if @cart
   end
+  
 end

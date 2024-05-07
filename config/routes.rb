@@ -11,9 +11,9 @@ Rails.application.routes.draw do
       :registrations => "users/registrations",sessions: 'users/sessions'}
       # devise_for :users, controllers: { sessions: 'users/sessions' }
      
- 
+      patch '/cart_products/:id', to: 'cart_products#update', as: 'update_cart_product'
       
-      resource :cart, only: [:show]
+      resource :cart, only: [:show, :update]
       resources :cart_products, only: [:create, :update, :destroy]
       root 'products#index'
        resources :products, only: [:new, :create, :show]
