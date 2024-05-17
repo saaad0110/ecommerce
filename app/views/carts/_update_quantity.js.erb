@@ -1,0 +1,4 @@
+
+$(".quantity-display-<%= @cart_product.id %>").text("Quantity: <%= @cart_product.quantity %>");
+
+$(".total-price-display-<%= @cart_product.id %>").text("Total Price: <%= number_to_currency(@total_price) %>");

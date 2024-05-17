@@ -23,26 +23,27 @@ end
   before_action :set_cart_product, only: [:update, :destroy]
 
   def update
+    
+    
+    
     @cart_product = CartProduct.find(params[:id])
-  
-    if params[:cart_product].present? && params[:cart_product][:quantity].present?
-      # Update the quantity if it's present in params
-      @cart_product.quantity = params[:cart_product][:quantity].to_i
-    elsif params[:operation].present? # If operation is present
-      if params[:operation] == 'increase'
-        @cart_product.quantity += 1
-      elsif params[:operation] == 'decrease' && @cart_product.quantity > 1
-        @cart_product.quantity -= 1
-      end
+    @cart_product.update(quantity: params[:cart_product][:quantity]) 
+   
+    
+    if params[:operation] == 'increase'
+      @cart_product.quantity += 1
+    elsif params[:operation] == 'decrease'
+      @cart_product.quantity -= 1 if @cart_product.quantity > 1 
     end
   
+    
     if @cart_product.save
-      redirect_to cart_path, notice: 'Product quantity updated successfully.'
+      redirect_to cart_path
     else
       redirect_to cart_path, alert: 'Failed to update product quantity.'
     end
   end
-  
+
   
   def destroy
     if @cart_product.destroy
@@ -63,5 +64,5 @@ end
   def set_cart_product
     @cart_product = CartProduct.find(params[:id])
   end
-
+  
 end
