@@ -1,3 +1,10 @@
+<!-- app/views/products/show.html.erb -->
+
+<h1><%= @product.name %></h1>
+<p><%= @product.description %></p>
+
+<p><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+
 <p>
   <strong>Name:</strong>
   <%= @product.name %>
@@ -22,10 +29,23 @@
   <%= image_tag @product.photo %>
 <% end %>
 
-<%= button_to "Add to Cart", add_to_cart_user_cart_path(product_id: @product.id), method: :post, class: "add-to-cart-button" %>
+<%= link_to "Products", products_path %>
+<%= link_to "Cart", cart_path %>
 
+<% unless current_user.buyer? %>
+  <%= link_to 'Edit', edit_product_path(@product) %>
+  <%= link_to "Destroy", @product, method: :delete, data: { confirm: "Are you sure?" } %>
+<% end %>
 
-<%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>
+<%= link_to "show order", orders_path %>
 
+<%= form_with(url: cart_products_path, method: :post) do |form| %>
+  <%= form.hidden_field :product_id, value: @product.id %>
+  <div class="form-group">
+    <%= form.label :quantity, "Quantity:" %>
+    <%= form.number_field :quantity, class: "form-control", min: 1, value: 1 %>
+  </div>
 
+  <%= form.submit "Add to Cart", class: "btn btn-primary" %>
+<% end %>

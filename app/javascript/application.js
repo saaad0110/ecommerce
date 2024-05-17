@@ -4,3 +4,14 @@ import "controllers"
 
 import "trix"
 import "@rails/actiontext"
+// = require jquery
+//= require turbolinks
+import "jquery"
+global.$ = jQuery;
+import "./script";  // then your other imports that use `$`
+
+// NOTE: don't use relative imports: `import "./script"`
+//       add `pin "script"` to `importmap.rb`
+
+console.log($); // ok
+

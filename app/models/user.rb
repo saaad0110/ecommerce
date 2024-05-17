@@ -5,9 +5,13 @@
           :recoverable, :rememberable, :validatable
           enum role: {buyer: 0, seller: 1, }
           has_one :shop, dependent: :destroy
-          has_one :user_cart, dependent: :destroy
-           def has_shop?
+          has_one :cart, dependent: :destroy
+        
     
+            has_one :cart, dependent: :destroy
+            has_many :orders, dependent: :destroy
+            
+            def has_shop?
     self.shop.present?
   end
 
