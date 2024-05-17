@@ -1,0 +1,90 @@
+<h1>Your Cart</h1>
+
+<ul id="cart-items">
+  <% total_amount = 0 %>
+  <% @cart.cart_products.each do |cart_product| %>
+    <li data-product-id="<%= cart_product.id %>">
+      <%= cart_product.product.name %> 
+      <!-- Wrap the quantity display in a span with a specific class including the product ID -->
+      <span class="quantity-display-<%= cart_product.id %>">
+        Quantity: <%= cart_product.quantity %>
+      </span> -
+      <!-- Wrap the total price display in a span with a specific class including the product ID -->
+      <span class="total-price-display-<%= cart_product.id %>">
+        Total Price: <%= number_to_currency((cart_product.product.price || 0).to_d * (cart_product.quantity || 0).to_i) %>
+      </span>
+
+      <!-- Form to update quantity -->
+      <%= form_with(model: cart_product, url: update_quantity_cart_path(cart_product.cart), method: :patch, local: true, class: "update-form") do |f| %>
+        <%= f.number_field :quantity, min: 1, data: { product_id: cart_product.id, cart_id: @cart.id }, class: "update-quantity" %>
+      <% end %>
+
+      <!-- Form to remove product from cart -->
+      <%= form_with(model: cart_product, url: cart_product_path(cart_product), method: :delete, data: { confirm: 'Are you sure?' }) do |f| %>
+        <%= f.submit 'Remove' %>
+      <% end %>
+
+      <% total_amount += (cart_product.product.price || 0).to_d * (cart_product.quantity || 0).to_i %>
+    </li>
+  <% end %>
+</ul>
+
+<!-- Display total amount -->
+<div id="total-amount">
+  <strong>Total Amount:</strong>
+  <%= number_to_currency(total_amount) %>
+</div>
+
+<!-- Order Now button -->
+<%= link_to "Order Now", new_order_path, class: "btn btn-primary" %>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Function to update total amount
+    function updateTotalAmount() {
+      var totalAmount = 0;
+      $('#cart-items li').each(function() {
+        var price = parseFloat($(this).find('.total-price-display-' + $(this).data('product-id')).text().replace(/[^\d.-]/g, ''));
+        totalAmount += price;
+      });
+      $('#total-amount').text('Total Amount: ' + totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }));
+    }
+
+    $(document).on('input', '.update-quantity', function() {
+      var quantity = $(this).val();
+      var product_id = $(this).data("product-id");
+      var cart_id = $(this).data("cart-id");
+      
+      console.log("Product ID:", product_id);
+      console.log("Cart ID:", cart_id);
+      console.log("Quantity:", quantity);
+
+      var csrfToken = $("meta[name=csrf-token]").attr("content");
+
+      $.ajax({
+        url: '/carts/' + cart_id + '/update_quantity',
+        type: "PATCH",
+        data: {
+          cart_product_id: product_id,
+          quantity: quantity
+        },
+        headers: {
+          'X-CSRF-Token': csrfToken
+        },
+        success: function() {
+          console.log("Quantity updated successfully.");
+          // Update total amount after successful update
+          updateTotalAmount();
+        },
+        error: function(data) {
+          console.log("Error occurred:", data);
+        }
+      });
+    });
+
+    // Initial update of total amount on page load
+    updateTotalAmount();
+  });
+</script>

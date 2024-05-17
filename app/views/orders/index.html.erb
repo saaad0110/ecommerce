@@ -1,0 +1,30 @@
+<h1>My Orders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Product Names</th>
+      <th>Total Price</th>
+      <th>Address</th>
+      <th>Payment Method</th>
+      <th>Placed At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.product_names %></td>
+        <td><%= number_to_currency(order.total_price) %></td>
+        <td><%= order.address %></td>
+        <td><%= order.payment_method %></td>
+        <td><%= order.created_at.strftime("%B %d, %Y %H:%M") %></td>
+        <td><%= link_to 'Show', order_path(order) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back to Products', products_path %>

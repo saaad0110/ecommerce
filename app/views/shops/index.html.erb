@@ -1,9 +1,6 @@
 <h1>My Shop</h1>
 
-<p><%= link_to 'Sign out', destroy_user_session_path, data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %> </p>
+
 <% if user_signed_in? %>
   <%= link_to "Create Shop", new_shop_path %>
 <% end %>
@@ -21,20 +18,7 @@
   </thead>
 
   <tbody>
-    <% @products.each do |product| %>
-      <tr>
-        <td><%= product.name %></td>
-        <td><%= product.description %></td>
-        <td><%= number_to_currency(product.price) %></td>
-        <td><%= product.shop.shop_name %></td>
-        <% if product.photo.attached? %>
-          <%= image_tag product.photo %>
-        <% end %>
-        <td><%= link_to 'Show', product %></td>
-        <td><%= link_to 'Edit', edit_product_path(product) %></td>
-        <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+ 
   </tbody>
 </table>
 
